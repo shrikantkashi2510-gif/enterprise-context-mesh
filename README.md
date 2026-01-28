@@ -1,6 +1,9 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # Enterprise Context Mesh (ECM) 🌐
-![CI Status](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg)
+![CI Status]
+| Production (Stable) | Development (Active) |
+| :--- | :--- |
+|![Main Status](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg?branch=main) | ![Develop Status](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg?branch=develop) |
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python: 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![MCP: 1.0](https://img.shields.io/badge/MCP-1.0-orange.svg)
