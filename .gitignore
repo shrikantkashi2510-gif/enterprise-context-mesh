@@ -1,0 +1,27 @@
+# =================================================================
+# ENTERPRISE CONTEXT MESH - GIT IGNORE
+# =================================================================
+
+# Environments & Secrets (CRITICAL)
+.env
+venv/
+env/
+.python-version
+
+# Python artifacts
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS & IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Docker logs
+logs/
+*.log
