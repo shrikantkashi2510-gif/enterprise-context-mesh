@@ -1,37 +1,47 @@
 name: CI-Security-Pipeline
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    
     services:
       postgres:
         image: postgres:16-alpine
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres_test_password
-          POSTGRES_DB: enterprise_db  # Explicitly name the DB
+          POSTGRES_DB: enterprise_db
         ports:
           - 5432:5432
-        # Use a robust health check to prevent 'Connection Refused'
+        # Crucial: Ensures the DB is ready before the 'test' job starts
         options: >-
-          --health-cmd pg_isready -U postgres -d enterprise_db
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
-      - name: Install Dependencies
+
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-mock
-      
+
       - name: Run Enterprise Security Suite
         env:
-          DATABASE_URL: postgresql://postgres:postgres_test_password@localhost:5432/postgres
-        run: pytest tests/
+          # Use localhost as the runner is on the VM, connecting to the Docker port
+          DATABASE_URL: postgresql://postgres:postgres_test_password@localhost:5432/enterprise_db
+        run: |
+          # The -v flag provides a detailed audit log in your CI output
+          pytest -v tests/
