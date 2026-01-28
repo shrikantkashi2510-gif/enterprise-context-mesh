@@ -8,46 +8,36 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     services:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres_test_password
           POSTGRES_DB: enterprise_db
-        ports:
-          - 5432:5432
-        # Crucial: Ensures the DB is ready before the 'test' job starts
+        ports: ["5432:5432"]
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d enterprise_db
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install dependencies
+      
+      - name: Install Dependencies
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-mock
-
+      
       - name: Run Enterprise Security Suite
         env:
-          POSTGRES_HOST: localhost
+          # Crucial: Ensures python -m pytest finds your 'app' folder
+          PYTHONPATH: ${{ github.workspace }}
           DATABASE_URL: postgresql://postgres:postgres_test_password@localhost:5432/enterprise_db
         run: |
-          # Use 'python -m pytest' to ensure proper module discovery
-          # We explicitly point to the 'tests' directory to avoid exit code 4
+          # The '-v' flag helps us see which tests are being collected
           python -m pytest -v --asyncio-mode=auto tests/
-          
-          
-          
-          
-          
