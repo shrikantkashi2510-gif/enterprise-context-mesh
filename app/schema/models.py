@@ -1,16 +1,18 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator  # <--- FIXED: Added this import
 from typing import List, Dict, Any, Optional
 
 class SQLQueryRequest(BaseModel):
+    """Schema for incoming SQL query requests via MCP."""
     query: str = Field(
         ..., 
         description="The SQL SELECT query to execute. Must be read-only.",
-        json_schema_extra={"example": "SELECT * FROM users LIMIT 10;"} # Fixed V2 syntax
+        json_schema_extra={"example": "SELECT * FROM users LIMIT 10;"}
     )
 
-    @field_validator('query') # Fixed V2 syntax
+    @field_validator('query')
     @classmethod
     def enforce_read_only(cls, v: str) -> str:
+        """Strategic validation to block write operations at the schema level."""
         forbidden = ["INSERT", "UPDATE", "DELETE", "DROP", "TRUNCATE", "ALTER"]
         if any(keyword in v.upper() for keyword in forbidden):
             raise ValueError("Only SELECT operations are permitted for security governance.")
