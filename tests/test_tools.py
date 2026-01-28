@@ -9,8 +9,9 @@ async def test_query_internal_db_happy_path(mcp_client, mocker):
                  return_value=mock_results)
 
     # Call the tool via MCP
+    # CHANGED: Argument name is now 'query' to match the function signature
     result = await mcp_client.call_tool("query_internal_db", {
-        "sql_query": "SELECT * FROM companies LIMIT 1;"
+        "query": "SELECT * FROM companies LIMIT 1;"
     })
 
     assert "Global Corp" in result
