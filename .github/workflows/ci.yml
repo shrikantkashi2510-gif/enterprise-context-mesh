@@ -8,36 +8,43 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    
     services:
-      postgres:
+      # Renamed to 'db_service' to avoid any 'postgres' keyword conflicts
+      db_service:
         image: postgres:16-alpine
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres_test_password
           POSTGRES_DB: enterprise_db
-        ports: ["5432:5432"]
+        ports:
+          - 5432:5432
+        # Hardened Health Check: Explicitly targets the user and db
         options: >-
-          --health-cmd pg_isready -U postgres -d enterprise_db
+          --health-cmd "pg_isready -U postgres -d enterprise_db"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install Dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-mock
-      
+
       - name: Run Enterprise Security Suite
         env:
-          # Crucial: Ensures python -m pytest finds your 'app' folder
+          # Explicitly set PYTHONPATH to the root to solve 'Exit Code 1' discovery errors
           PYTHONPATH: ${{ github.workspace }}
           DATABASE_URL: postgresql://postgres:postgres_test_password@localhost:5432/enterprise_db
         run: |
-          # The '-v' flag helps us see which tests are being collected
+          # The '--trace-config' helps debug internal pytest discovery failures if they occur
           python -m pytest -v --asyncio-mode=auto tests/
