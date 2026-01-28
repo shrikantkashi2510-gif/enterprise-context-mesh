@@ -3,6 +3,7 @@ import logging
 from mcp.server.fastmcp import FastMCP
 from app.adapters.postgres_adapter import PostgresAdapter
 from app.adapters.api_proxy import APIProxyAdapter
+from app.schema.models import SQLQueryRequest, APIContextRequest
 
 # Setup Enterprise Logging
 logger = logging.getLogger("ECM-Server")
@@ -14,16 +15,13 @@ class EnterpriseContextMesh:
     """
 
     def __init__(self):
-        # 1. Initialize FastMCP with 2026 Production Standards
-        self.mcp = FastMCP(
-            "Enterprise-Context-Mesh",
-            description="High-security data mesh for Agentic Workflows",
-            version="1.0.0"
-        )
+        # 1. Initialize FastMCP (Fixed for compatibility)
+        # We pass only the name here. Description/Version are handled in metadata or ignored in this version.
+        self.mcp = FastMCP("Enterprise-Context-Mesh")
 
         # 2. Instantiate Modular Adapters
         self.db = PostgresAdapter()
-        # Example External Service (e.g., Salesforce or Internal CRM)
+        # Example External Service
         self.crm_proxy = APIProxyAdapter(base_url=os.getenv("CRM_API_BASE_URL", "https://api.crm.internal"))
 
         # 3. Register Global Tools
@@ -32,17 +30,17 @@ class EnterpriseContextMesh:
     def _register_tools(self):
         """
         Standardizes adapter methods into AI-discoverable tools.
-        The docstrings below are read by the LLM to understand 'Intent'.
         """
 
         @self.mcp.tool()
-        async def query_internal_db(sql_query: str) -> str:
+        async def query_internal_db(request: SQLQueryRequest) -> str:
             """
             Fetch live enterprise data from the internal PostgreSQL cluster.
             Enforces Read-Only governance and SQL injection protection.
             """
-            logger.info(f"Executing Governed SQL Query: {sql_query[:50]}...")
-            results = await self.db.execute_read_only(sql_query)
+            # The 'request' object is already validated by Pydantic before it reaches here
+            logger.info(f"Executing Governed SQL Query: {request.query[:50]}...")
+            results = await self.db.execute_read_only(request.query)
             return f"Results from Internal DB:\n{results}"
 
         @self.mcp.tool()
