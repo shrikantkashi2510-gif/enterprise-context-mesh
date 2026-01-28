@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # The Enterprise Context Mesh Hub
+  ecm-hub:
+    build: .
+    container_name: ecm-hub
+    env_file: .env
+    depends_on:
+      db-enterprise:
+        condition: service_healthy
+    networks:
+      - mcp-private-network
+    restart: unless-stopped
+
+  # Secure Enterprise Database (Isolated)
+  db-enterprise:
+    image: postgres:16-alpine
+    container_name: db-enterprise
+    environment:
+      POSTGRES_USER: mcp_user
+      POSTGRES_PASSWORD: your_secure_password
+      POSTGRES_DB: enterprise_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mcp-private-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mcp_user -d enterprise_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  mcp-private-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
