@@ -40,11 +40,13 @@ jobs:
 
       - name: Run Enterprise Security Suite
         env:
-          # Use localhost as the runner is on the VM, connecting to the Docker port
+          POSTGRES_HOST: localhost
           DATABASE_URL: postgresql://postgres:postgres_test_password@localhost:5432/enterprise_db
         run: |
-          # The -v flag provides a detailed audit log in your CI output
-          pytest -v tests/
+          # Use 'python -m pytest' to ensure proper module discovery
+          # We explicitly point to the 'tests' directory to avoid exit code 4
+          python -m pytest -v --asyncio-mode=auto tests/
+          
           
           
           
