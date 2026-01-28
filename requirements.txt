@@ -1,0 +1,21 @@
+# =================================================================
+# ENTERPRISE CONTEXT MESH - CORE DEPENDENCIES
+# =================================================================
+
+# Protocol & Server Layer
+mcp>=1.1.0          # Official Model Context Protocol SDK
+fastmcp>=0.4.1      # High-level framework for MCP tool discovery
+
+# Database & Networking
+asyncpg>=0.30.0     # High-performance async driver for PostgreSQL
+sqlalchemy>=2.0.30  # SQL toolkit and ORM (used for typing/session mgt)
+httpx>=0.27.0       # Async HTTP client for the API Proxy Adapter
+
+# Data Validation & Environment
+pydantic>=2.7.0     # Strict data schemas for enterprise governance
+python-dotenv>=1.0.1 # Secure loading of .env variables
+
+# Testing Suite (Development Only)
+pytest>=8.2.0
+pytest-asyncio>=0.23.0
+pytest-mock>=3.14.0
