@@ -35,5 +35,5 @@ Before submitting a Pull Request, ensure:
 If you discover a security vulnerability, **do not open a public issue.** Please email the Lead Advisor directly at [advisory.shrikant@gmail.com] to initiate a coordinated disclosure.
 
 ---
-**Lead Advisor:** [Shrikant Kashi/AI Architect Advisor]  
+**Lead Advisor:** [Shrikant Kashi/AI Systems Architect]  
 **Operating Standard:** 2026 Enterprise-Grade AI Operations
