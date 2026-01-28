@@ -5,13 +5,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      db:
+      postgres:
         image: postgres:16-alpine
         env:
           POSTGRES_PASSWORD: postgres_test_password
-        ports: ["5432:5432"]
+          POSTGRES_DB: enterprise_db  # Explicitly name the DB
+        ports:
+          - 5432:5432
+        # Use a robust health check to prevent 'Connection Refused'
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d enterprise_db
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
