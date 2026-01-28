@@ -1,4 +1,4 @@
-
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # Enterprise Context Mesh (ECM) 🌐
 ![CI Status](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
