@@ -15,12 +15,12 @@ def mcp_server(mesh_instance):
 @pytest.fixture
 def mcp_client(mcp_server):
     """
-    Simulates the MCP Client behavior by exposing the server's tool-calling logic.
-    This bypasses the 'fixture not found' error by providing a clean interface.
+    Simulates an MCP Client. 
+    By defining this here, 'fixture mcp_client not found' is resolved.
     """
     class MockClient:
         async def call_tool(self, name: str, arguments: dict):
-            # FastMCP allows direct internal calls for testing 2026 standards
+            # Directly invokes the tool logic within the server instance
             return await mcp_server.call_tool(name, arguments)
             
     return MockClient()
