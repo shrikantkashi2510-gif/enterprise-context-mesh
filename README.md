@@ -1,13 +1,17 @@
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # Enterprise Context Mesh (ECM) 🌐
-![CI Status]
-| Production (Stable) | Development (Active) |
-| :--- | :--- |
-|![Main Status](https://github.com/actions/workflows/ci.yml/badge.svg?branch=main) | ![Develop Status](https://github.com/actions/workflows/ci.yml/badge.svg?branch=develop) |
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+
+| **System Status** | **Production (Stable)** | **Development (Active)** |
+| :--- | :--- | :--- |
+| **CI/CD Pipeline** |![Main Status](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/actions/workflows/ci.yml/badge.svg?branch=main) | ![Develop Status](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/actions/workflows/ci.yml/badge.svg?branch=develop) |
+| **Governance** | ![Governance: Active](https://img.shields.io/badge/Governance-Active-success.svg) | ![Security: Hardened](https://img.shields.io/badge/Security-Hardened-blue.svg) |
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 ![Python: 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![MCP: 1.0](https://img.shields.io/badge/MCP-1.0-orange.svg)
-![Governance: Active](https://img.shields.io/badge/Governance-Active-success.svg)
+
+**The Secure, Governed Bridge for Agentic Data Interoperability.**
+
+ECM is a high-performance, standardized data-layer built on the **Model Context Protocol (MCP)**. It acts as the "Central Nervous System" for autonomous agents, bridging the gap between LLMs and fragmented enterprise data (PostgreSQL, Salesforce, SAP).
 
 > **The Unified MCP Server Hub for Governed Agentic Workflows.**
 
