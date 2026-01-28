@@ -1,0 +1,17 @@
+# =================================================================
+# ENTERPRISE CONTEXT MESH - CURSOR AI IGNORE
+# =================================================================
+
+# Prevent AI from wasting tokens on non-code assets
+venv/
+.git/
+__pycache__/
+logs/
+*.log
+docker-compose.yml
+Dockerfile
+
+# Ignore documentation that doesn't help with coding
+docs/_build/
+dist/
+build/
