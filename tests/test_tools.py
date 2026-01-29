@@ -3,12 +3,14 @@ import pytest
 @pytest.mark.asyncio
 async def test_query_internal_db_happy_path(mcp_client, mocker):
     """Verifies that a valid SQL query returns the expected results."""
+    # Mock the DB adapter results
     mock_results = [{"id": 1, "name": "Global Corp", "revenue": 5000000}]
-    mocker.patch("app.adapters.postgres_adapter.PostgresAdapter.execute_read_only",
+    mocker.patch("app.adapters.postgres_adapter.PostgresAdapter.execute_read_only", 
                  return_value=mock_results)
 
+    # Call the tool with the simplified 'query' argument
     result = await mcp_client.call_tool("query_internal_db", {
-        "request": "SELECT * FROM companies LIMIT 1;"  # Changed from sql_query to request
+        "query": "SELECT * FROM companies LIMIT 1;"  # <--- CHANGED: Key is 'query', Value is String
     })
 
     assert "Global Corp" in result
