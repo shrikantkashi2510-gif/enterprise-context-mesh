@@ -25,3 +25,6 @@ htmlcov/
 # Docker logs
 logs/
 *.log
+
+# Ignore generated documentation artifacts
+*.pdf
