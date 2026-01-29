@@ -5,16 +5,21 @@ async def test_query_internal_db_happy_path(mcp_client, mocker):
     """Verifies that a valid SQL query returns the expected results."""
     # Mock the DB adapter results
     mock_results = [{"id": 1, "name": "Global Corp", "revenue": 5000000}]
-    mocker.patch("app.adapters.postgres_adapter.PostgresAdapter.execute_read_only", 
+    mocker.patch("app.adapters.postgres_adapter.PostgresAdapter.execute_read_only",
                  return_value=mock_results)
 
-    # Call the tool with the simplified 'query' argument
+    # Call the tool via MCP
     result = await mcp_client.call_tool("query_internal_db", {
-        "query": "SELECT * FROM companies LIMIT 1;"  # <--- CHANGED: Key is 'query', Value is String
+        "query": "SELECT * FROM companies LIMIT 1;"
     })
 
-    assert "Global Corp" in result
-    assert "revenue" in result
+    # --- THE FIX ---
+    # Convert the rich object (TextContent) to a string so we can search inside it.
+    # The result comes back as [TextContent(type='text', text='...')]
+    result_str = str(result)
+
+    assert "Global Corp" in result_str
+    assert "revenue" in result_str
 
 @pytest.mark.asyncio
 async def test_schema_validation_blocks_bad_input(mcp_client):
