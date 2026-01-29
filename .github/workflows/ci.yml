@@ -48,3 +48,4 @@ jobs:
         run: |
           # The '--trace-config' helps debug internal pytest discovery failures if they occur
           python -m pytest -v --asyncio-mode=auto tests/
+          
