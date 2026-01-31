@@ -51,3 +51,4 @@ docker-compose up --build -d
 
 # Verify connectivity
 curl http://localhost:8000/sse
+
